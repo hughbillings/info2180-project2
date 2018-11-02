@@ -26,7 +26,7 @@ window.onload = function() {
 	puzzlearea.style.visibility = "hidden";
 
 
-
+// Create 4 by 4 puzzle
 function create4by() 
 {	
 	puzzlearea.style.visibility = "visible";
@@ -86,6 +86,7 @@ function create4by()
 
 }
 
+// Hide the remaining divs for the 3 x 3
 function removeexcess(x)
 {
 	for (var i = 8; i < x.length; i++)
@@ -93,6 +94,7 @@ function removeexcess(x)
 		x[i].style.visibility = "hidden";
 	}
 }
+// Create the 3x3 puzzle 
 function create3by() 
 {	
 	puzzlearea.style.visibility = "visible";
@@ -156,7 +158,7 @@ function create3by()
 
 
 
-
+// Used to check if the empty square is near a piece
 	function emptyisnear(z,x,y)
 	{
 		
@@ -188,7 +190,9 @@ function create3by()
 			return status;
 		
 	} 
-
+	
+	
+// Used to swap squares for 3x3
 	function values3(z)
 	{
 		var switcher = z.style.top;
@@ -199,7 +203,7 @@ function create3by()
 		emptyleft3 = switcher;
 
 	}
-
+// Used to swap pieces in the 4x4
 	function values4(z) 
 	{
 
@@ -212,6 +216,8 @@ function create3by()
 		emptyleft4 = switcher;
 
 	}
+	
+// Failed attempt at shuffling
 
 	function shuffles()
 	{
