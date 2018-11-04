@@ -1,165 +1,125 @@
-
-window.onload = function() {
-
-	var puzzlearea = document.getElementById('puzzlearea');
-	var puzzlepieces = puzzlearea.querySelectorAll('div');
-	var tester = puzzlepieces;
-	var piecefor4;
-	var piecefor3;
-	var emptytop3;
-	var emptyleft3;
-	var emptytop4;
-	var emptyleft4;
-
-	
-	// Adding the 3x3 and 4x4 options
-	var controls = document.getElementById("controls");
-	var by3 = document.createElement("button");
-	var by4 = document.createElement("button");
-	by3.addEventListener("click",create3by,false);
-	by4.addEventListener("click",create4by,false);
-	by3.innerHTML = "3x3";
-	by4.innerHTML = "4x4";
-	controls.appendChild(by4);
-	controls.appendChild(by3);
-	var shuffle = document.getElementById("shufflebutton");
-	puzzlearea.style.visibility = "hidden";
-
-
-// Create 4 by 4 puzzle
-function create4by() 
-{	
-	puzzlearea.style.visibility = "visible";
-	piecefor4 = puzzlepieces;
-	emptytop4 = "300px";
-	emptyleft4 = "300px";
-	var top = 0;
-	var left = 0;
-	
- 
-	for (var i = 0; i < piecefor4.length; i++)
-	{
-		if(left == 400)
-		{
-			top += 100;
-			left = 0;
-		} else if (top == 400) 
-		{
-			break;
-		}
-		piecefor4[i].style.visibility = "visible";
-		piecefor4[i].classList.add("puzzlepiece");
-		piecefor4[i].style.top = `${top}px`;
-		piecefor4[i].style.left = `${left}px`;
-		left += 100;	
-
-		piecefor4[i].addEventListener("mouseover", function()
-				{	
-					
-					if(emptyisnear(this,emptyleft4,emptytop4))
-					{
-						this.classList.add("movablepiece");
-					}
-				},false);
-			
-
-
-
-		piecefor4[i].addEventListener("mouseout", function () 
-				{
-					this.classList.remove("movablepiece");
-				}, false);
-
-
-		piecefor4[i].addEventListener("click",function() 
-			{
-				
-				if(emptyisnear(this,emptyleft4,emptytop4)){
-					values4(this);
-				}
-			});
-	}
-
-		shuffle.addEventListener("click",shuffles
-		,false);
-
-
-}
-
-// Hide the remaining divs for the 3 x 3
-function removeexcess(x)
+window.onload = function () 
 {
-	for (var i = 8; i < x.length; i++)
-	{
-		x[i].style.visibility = "hidden";
-	}
-}
-// Create the 3x3 puzzle 
-function create3by() 
-{	
-	puzzlearea.style.visibility = "visible";
-	piecefor3 = puzzlepieces;
-	emptytop4 = "200px";
-	emptyleft4 = "200px";
-	var top = 0;
-	var left = 0;
-	removeexcess(piecefor3);
+	var puzzlearea = document.getElementById("puzzlearea");
+	var puzzlepieces = puzzlearea.querySelectorAll('div');
+	var emptysquaretop;
+	var emptysquareleft;
+	var background;
 	
- 
-	for (var i = 0; i < piecefor3.length; i++)
-	{
-		if(left == 300)
+
+	// Implement Backgrounds and Shuffle Button
+
+	var shufflebutton = document.getElementById("shufflebutton");
+
+	var controls = document.getElementById("controls");
+	shufflebutton.addEventListener("click", shuffle);
+	
+	var image1 = document.createElement("button");
+	image1.innerHTML = "CREATOR";
+	image1.addEventListener("click", function()
 		{
-			top += 100;
-			left = 0;
-		} else if (top == 300) 
-		{
-			break;
-		}
-		piecefor3[i].classList.add("puzzlepiece");
-		piecefor3[i].style.top = `${top}px`;
-		piecefor3[i].style.left = `${left}px`;
-		left += 100;	
-
-		piecefor3[i].addEventListener("mouseover", function()
-				{	
-					
-					if(emptyisnear(this,emptyleft4,emptytop4))
-					{
-						this.classList.add("movablepiece");
-					}
-				},false);
-			
-
-
-
-		piecefor3[i].addEventListener("mouseout", function () 
-				{
-					this.classList.remove("movablepiece");
-				}, false);
-
-
-		piecefor3[i].addEventListener("click",function() 
+			background = "background.jpg";
+			for (var i = 0; i < puzzlepieces.length; i++)
 			{
-				
-				if(emptyisnear(this,emptyleft3,emptytop3)){
-					values3(this);
+
+				puzzlepieces[i].style.backgroundImage=  "url("+ `${background}` +")";
+			}
+		});
+	var image2 = document.createElement("button");
+		image2.innerHTML = "BIRDS";
+	image2.addEventListener("click", function()
+		{
+			background = "birds.jpg";
+			for (var i = 0; i < puzzlepieces.length; i++)
+			{
+
+				puzzlepieces[i].style.backgroundImage=  "url("+ `${background}` +")";
+			}
+		});
+	var image3 = document.createElement("button");
+		image3.innerHTML = "MINIONS";
+	image3.addEventListener("click", function()
+		{
+			background = "minions.jpg";
+			for (var i = 0; i < puzzlepieces.length; i++)
+			{
+
+				puzzlepieces[i].style.backgroundImage=  "url("+ `${background}` +")";
+			}
+		});
+	var image4 = document.createElement("button");
+		image4.innerHTML = "NICESTUFF";
+	image4.addEventListener("click", function()
+		{
+			background = "nicestuff.jpg";
+			for (var i = 0; i < puzzlepieces.length; i++)
+			{
+
+				puzzlepieces[i].style.backgroundImage=  "url("+ `${background}` +")";
+			}
+		});
+
+	
+	controls.appendChild(image1);
+	controls.appendChild(image2);
+	controls.appendChild(image3);
+	controls.appendChild(image4);
+
+	puzzleappearance();
+
+
+
+
+
+
+
+function puzzleappearance () 
+{
+	var top;
+	var left;
+	emptysquaretop = "300px";
+	emptysquareleft = "300px";
+	background = selectbackground();
+	
+
+	for (var i = 0; i< puzzlepieces.length; i++)
+	{
+		top = parseInt(i/4);
+		left = i%4;
+
+		puzzlepieces[i].classList.add("puzzlepiece");
+		puzzlepieces[i].style.backgroundImage = "url("+ `${background}` +")";
+		puzzlepieces[i].style.top = (top*100)+"px";
+		puzzlepieces[i].style.left = (left*100)+"px";
+		var bgtop = "-"+(top*100)+"px";
+		var bgleft = "-"+(left*100)+"px";
+		puzzlepieces[i].setAttribute("id",`${top},${left}`);
+		puzzlepieces[i].style.backgroundSize = "400px 400px"; 
+		puzzlepieces[i].style.backgroundPosition = `${bgleft} ${bgtop}`;
+		puzzlepieces[i].addEventListener("mouseover", function()
+			{
+				if(emptyisnear(this,emptysquareleft,emptysquaretop))
+				{
+					this.classList.add("movablepiece");
+				}
+			}
+			,false);
+		puzzlepieces[i].addEventListener("mouseout", function()
+			{
+				this.classList.remove("movablepiece");
+			},false);
+		puzzlepieces[i].addEventListener("click", function() 
+			{
+				if(emptyisnear(this,emptysquareleft,emptysquaretop))
+				{
+					movesquaretoempty(this);
 				}
 			});
+
 	}
-
-		shuffle.addEventListener("click",shuffles
-		,false);
-
-
 }
 
-
-
-
-
-// Used to check if the empty square is near a piece
-	function emptyisnear(z,x,y)
+function emptyisnear(z,x,y)
 	{
 		
 		var status = true;
@@ -189,53 +149,41 @@ function create3by()
 
 			return status;
 		
-	} 
-	
-	
-// Used to swap squares for 3x3
-	function values3(z)
+} 
+
+
+function movesquaretoempty(z)
+
+{	
+	var val = z.style.top;
+	z.style.top = emptysquaretop;
+	emptysquaretop =val;
+	val = z.style.left;
+	z.style.left = emptysquareleft;
+	emptysquareleft = val; 
+}
+
+function findingsquareo(x,y)
+{
+	var square = document.getElementById(`${x},${y}`);
+	return square;
+}
+
+function shuffle()
+{	var i = 0;
+	while ( i < 100)
 	{
-		var switcher = z.style.top;
-		z.style.top = emptytop3;
-		emptytop3 = switcher;
-		switcher = z.style.left;
-		z.style.left = emptyleft3;
-		emptyleft3 = switcher;
-
+		var piece = findingsquareo(Math.floor(Math.random() * 100)%4, Math.floor(Math.random() * 100)%4);
+		movesquaretoempty(piece);
+		i++;
 	}
-// Used to swap pieces in the 4x4
-	function values4(z) 
-	{
+}
 
-		
-		var switcher = z.style.top;
-		z.style.top = emptytop4;
-		emptytop4 = switcher;
-		switcher = z.style.left;
-		z.style.left = emptyleft4;
-		emptyleft4 = switcher;
+function selectbackground()
+{
+	var backgrounds = ["background.jpg", "birds.jpg","minions.jpg", "nicestuff.jpg"];
+	var val = Math.floor(Math.random()*100)%4;
+	return backgrounds[val];
+}
 
-	}
-	
-// Failed attempt at shuffling
-
-	function shuffles()
-	{
-		var nearsquares = [];
-		
-			for(var x = 0; x < piecefor4.length; x++)
-			{
-				if(emptyisnear(piecefor4[x]))
-				{
-					nearsquares.push(piecefor4[x]);
-					position = Math.floor(Math.random()*Math.floor(nearsquares.length));
-					values4(nearsquares[position]);
-					nearsquares = [];
-				}
-			}
-		
-	}
-
-
-
-	}
+}
